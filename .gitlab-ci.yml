@@ -1,0 +1,25 @@
+stages:
+    - b&p acr
+    - deploy to aks
+variables:
+  RESOURCE_GROUP: "ymk"
+  AKS_CLUSTER_NAME: "drupal"
+
+docker_build:
+    stage: b&p acr
+    image: docker:latest
+    services:
+      - docker:dind # allows developers to run a Docker container within an already running Docker container to support CI/CD pipelines.
+    script:
+      - docker build -t $ACR_REGISTRY_IMAGE .
+      - docker login -u $ACR_REGISTRY_USER -p $ACR_REGISTRY_PASSWORD $ACR_REGISTRY
+      - docker push $ACR_REGISTRY_IMAGE
+deploy:
+  stage: deploy to aks
+  image:
+    name: bitnami/kubectl:1.14
+    entrypoint: [""]
+  script:
+    - echo "$KUBE_CONFIG" > kubeconfig.yml
+    - kubectl --kubeconfig=kubeconfig.yml apply -f $KUBE_DEPLOYMENT_FILE --namespace=$KUBE_NAMESPACE
+
