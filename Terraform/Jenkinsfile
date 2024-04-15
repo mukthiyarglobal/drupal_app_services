@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('checkout') {
             steps {
-                git branch: 'main', credentialsId: 'Github_login', url: 'https://github.com/mukthiyarglobal/drupal_app_services.git'
+                git branch: 'master', credentialsId: 'Github_login', url: 'https://github.com/mukthiyarglobal/drupal_app_services.git'
             }
         }
         stage ('azure_login') {
