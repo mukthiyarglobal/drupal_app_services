@@ -15,23 +15,38 @@ pipeline {
         }
         stage ('terraform init') {
             steps {
-                sh 'terraform init'
-                
+                dir('Terraform') {
+                    sh 'terraform init'
+                }
             }
         }
         stage ('terraform plan') {
             steps {
-			    sh 'terraform plan -out=tfplan'
+                dir('Terraform') {
+                    sh 'terraform plan -out=tfplan'
+                }
             }
         }
         stage ('terraform action') {
             steps {
-                echo "Terraform action is --> ${action}"
-                sh ('terraform ${action} --auto-approve') 
+                dir('Terraform') {
+                     echo "Terraform action is --> ${action}"
+                     sh ('terraform ${action} --auto-approve') 
+                }
             }
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
