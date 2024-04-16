@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
         - name: drupal
-          image: drupalacr01.azurecr.io/drupal
+          image: drupalacr01.azurecr.io/drupal:{{DOCKER_TAG}}
           ports:
             - containerPort: 8080
           env:
